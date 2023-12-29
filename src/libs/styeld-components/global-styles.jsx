@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import '../../assets/fonts/font.css'
-import { BREAK_POINT, FONT_SIZE, FONT_WEIGHT } from './tokens'
+import { BREAK_POINT, COLOR, FONT_SIZE, FONT_WEIGHT } from './tokens'
 
 const GlobalStyles = createGlobalStyle`
     * {
@@ -13,6 +13,9 @@ const GlobalStyles = createGlobalStyle`
         font-weight: ${FONT_WEIGHT.normal};
     }
     html {
+        background-color: ${COLOR.main};
+        color: ${COLOR.black};
+
         font-size: 80%;
         @media screen and (max-width: ${BREAK_POINT.md}){
           font-size: 65%;
