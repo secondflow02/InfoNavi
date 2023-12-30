@@ -9,6 +9,8 @@ import debounce from '../utils/debounce'
 import LogoImg from '/logo/logo-766x152.webp'
 
 import { useSetRecoilState } from 'recoil'
+import Spacer from '../components/spacer'
+import TermsList from '../components/terms-list'
 
 const Home = () => {
 	const setRecommendedTerms = useSetRecoilState(recommendedTermsAtom)
@@ -27,8 +29,9 @@ const Home = () => {
 				$radius='3rem'
 				$variant='outline'
 			>
-				<FlexColumnContainer>
+				<S.FlexColumnContainer>
 					<S.Logo src={LogoImg} width='30%' />
+					<Spacer $height='3rem' />
 					<SearchBox
 						$width='50%'
 						$radius='3rem'
@@ -36,7 +39,8 @@ const Home = () => {
 							onChangeInputLazy(e.target.value)
 						}}
 					/>
-				</FlexColumnContainer>
+					<TermsList $width='50%' />
+				</S.FlexColumnContainer>
 			</Center>
 		</Compressor>
 	)
@@ -49,13 +53,13 @@ const Logo = styled.img`
 `
 
 const FlexColumnContainer = styled.div`
+	position: relative;
 	display: flex;
 
 	flex-direction: column;
 	align-items: center;
-	justify-content: space-between;
 
-	gap: 5rem;
+	gap: 1rem;
 `
 
 const S = {

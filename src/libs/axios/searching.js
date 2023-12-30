@@ -1,15 +1,12 @@
 import { recommendedTermsInstance } from './base'
 
 export const getRecommendedTerms = async (key) => {
-	let response
-
 	try {
-		response = await recommendedTermsInstance().get('/search', {
+		const response = await recommendedTermsInstance().get('/search', {
 			params: { key }
 		})
+		return response.data
 	} catch (error) {
-		response = error.response
+		return [error.response.data]
 	}
-	console.log(response.data)
-	return response.data
 }
