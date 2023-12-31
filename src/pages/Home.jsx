@@ -1,22 +1,54 @@
+import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import Center from '../components/center'
 import Compressor from '../components/compressor'
 import SearchBox from '../components/search-box'
+import Spacer from '../components/spacer'
+import TermsList from '../components/terms-list'
 import { getRecommendedTerms } from '../libs/axios/searching'
+import focusIdxAtom from '../libs/recoil/focus-idx'
 import recommendedTermsAtom from '../libs/recoil/recommended-terms.atom'
 import { COLOR } from '../libs/styeld-components/tokens'
 import debounce from '../utils/debounce'
 import LogoImg from '/logo/logo-766x152.webp'
 
-import { useSetRecoilState } from 'recoil'
-import Spacer from '../components/spacer'
-import TermsList from '../components/terms-list'
-
 const Home = () => {
-	const setRecommendedTerms = useSetRecoilState(recommendedTermsAtom)
+	const [recommendedTerms, setRecommendedTerms] =
+		useRecoilState(recommendedTermsAtom)
+	const [focusIdx, setFocusIdx] = useRecoilState(focusIdxAtom)
+
+	const onChangeForm = (e) => {
+		onChangeInputLazy(e.target.value)
+	}
+
+	const onKeyUpForm = (e) => {
+		if (!recommendedTerms.length) {
+			setFocusIdx(-1)
+			return
+		}
+		let nxtIdx = focusIdx
+		switch (e.key) {
+			case 'ArrowUp':
+				nxtIdx = focusIdx <= 0 ? 0 : focusIdx - 1
+				break
+			case 'ArrowDown':
+				nxtIdx =
+					recommendedTerms.length - 1 <= focusIdx
+						? recommendedTerms.length - 1
+						: focusIdx + 1
+				break
+			case 'Enter':
+				break
+			default:
+				return
+		}
+		e.target.value = recommendedTerms[nxtIdx]
+		setFocusIdx(nxtIdx)
+	}
 
 	const fetchDataNRegisterWithGlobal = async (val) => {
 		const result = await getRecommendedTerms(val)
+		/** 전역상태로 관리 */
 		setRecommendedTerms(result)
 	}
 
@@ -35,9 +67,8 @@ const Home = () => {
 					<SearchBox
 						$width='50%'
 						$radius='3rem'
-						onChange={(e) => {
-							onChangeInputLazy(e.target.value)
-						}}
+						onChange={onChangeForm}
+						onKeyUp={onKeyUpForm}
 					/>
 					<TermsList $width='50%' />
 				</S.FlexColumnContainer>

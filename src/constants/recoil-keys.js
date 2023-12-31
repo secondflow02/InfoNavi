@@ -1,3 +1,3 @@
 const RECOMMENDED_TERMS = 'recommendedTerms'
-
-export { RECOMMENDED_TERMS }
+const FOCUS_IDX = 'focusIdx'
+export { FOCUS_IDX, RECOMMENDED_TERMS }

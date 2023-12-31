@@ -1,12 +1,8 @@
 import styled from 'styled-components'
-import { FONT_SIZE, FONT_WEIGHT } from '../libs/styeld-components/tokens'
+import { COLOR, FONT_SIZE, FONT_WEIGHT } from '../libs/styeld-components/tokens'
 
-const TermOne = ({ term }) => {
-	return (
-		<S.Wrapper>
-			<Span>{term}</Span>
-		</S.Wrapper>
-	)
+const TermOne = ({ term, $radius = '1rem', $isFocus }) => {
+	return <S.Wrapper {...{ $radius, $isFocus }}>{term}</S.Wrapper>
 }
 
 export default TermOne
@@ -17,17 +13,23 @@ const Wrapper = styled.li`
 
 	font-weight: ${FONT_WEIGHT.thin};
 
-	margin-bottom: 5px;
 	text-align: center;
 
 	display: flex;
 	align-items: center;
 	justify-content: center;
 
-	padding-bottom: 3px;
 	height: ${FONT_SIZE.md};
+
+	border-radius: ${({ $radius }) => $radius};
+	padding-bottom: 8px;
+
+	background-color: ${({ $isFocus }) =>
+		$isFocus ? COLOR.grayScale[1300] : COLOR.grayScale[1500]};
+
+	&:hover {
+		cursor: pointer;
+		background-color: ${COLOR.grayScale[1200]};
+	}
 `
-
-const Span = styled.span``
-
 const S = { Wrapper }

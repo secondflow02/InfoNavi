@@ -7,20 +7,35 @@ const SearchBox = ({
 	$bgColor = COLOR.grayScale[1500],
 	...rest
 }) => {
-	return <S.SearchInput {...{ $width, $radius, $bgColor, ...rest }} />
+	// return <S.SearchInput {...{ $width, $radius, $bgColor, ...rest }} />
+
+	return (
+		<S.FromWrapper
+			{...{ $width, $radius, $bgColor, ...rest }}
+			onClick={(e) => {
+				e.preventDefault()
+			}}
+		>
+			<S.SearchInput />
+			<S.EnterButton>🔎</S.EnterButton>
+		</S.FromWrapper>
+	)
 }
 
 export default SearchBox
 
-const SearchInput = styled.input`
+const FromWrapper = styled.form`
 	width: ${({ $width }) => $width};
 	background-color: ${({ $bgColor }) => $bgColor};
+	border: 2px solid black;
 	border-radius: ${({ $radius }) => $radius};
 
-	text-align: center;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
 	height: ${FONT_SIZE.lg};
-	padding: 12px;
+	padding: 10px;
 	@media screen and (max-width: ${BREAK_POINT.md}) {
 		height: ${FONT_SIZE.md};
 	}
@@ -29,6 +44,25 @@ const SearchInput = styled.input`
 	}
 `
 
+const SearchInput = styled.input`
+	width: 85%;
+	background-color: transparent;
+	border: none;
+`
+
+const EnterButton = styled.button`
+	min-width: 10%;
+	border-radius: 10rem;
+	background-color: ${COLOR.grayScale[1300]};
+
+	transition: background-color 0.15s ease-in-out;
+	&:hover {
+		background-color: ${COLOR.grayScale[1100]};
+	}
+`
+
 const S = {
-	SearchInput
+	FromWrapper,
+	SearchInput,
+	EnterButton
 }
