@@ -32,6 +32,8 @@ const TermsContainer = styled.ul`
 	border: 1px solid ${COLOR.grayScale[0]};
 	border-radius: ${({ $radius }) => $radius};
 
+	background-color: ${COLOR.grayScale[1500]};
+
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
