@@ -5,7 +5,7 @@ import recommendedTermsAtom from '../libs/recoil/recommended-terms.atom'
 import { COLOR } from '../libs/styeld-components/tokens'
 import TermOne from './term-one'
 
-const TermsList = ({ $width = '10%', $radius = '1rem' }) => {
+const TermsList = ({ $width = '100%', $radius = '1rem' }) => {
 	const recommendedTerms = useRecoilValue(recommendedTermsAtom)
 	const focusIdx = useRecoilValue(focusIdxAtom)
 

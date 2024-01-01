@@ -7,7 +7,6 @@ const getLocalStorageArr = ({ storageKey }) => {
 
 const unshiftElemToLocalStorageArr = ({ storageKey, element }) => {
 	let saveArr = getLocalStorageArr({ storageKey })
-	console.log(saveArr)
 	saveArr.unshift(element)
 	saveArr = [...new Set(saveArr)]
 	localStorage.setItem(storageKey, JSON.stringify(saveArr))
