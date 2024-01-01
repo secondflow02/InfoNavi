@@ -7,9 +7,11 @@ import searchKeywordAtom from '../libs/recoil/search-keyword'
 import { BREAK_POINT, COLOR, FONT_SIZE } from '../libs/styeld-components/tokens'
 import debounce from '../utils/debounce'
 import {
+	getLocalStorageArr,
 	resizeLocalStorageArr,
 	unshiftElemToLocalStorageArr
 } from '../utils/local-storage-manager'
+import { adjustNumberIncludingThresholds } from '../utils/threshold'
 
 const SearchField = ({
 	$radius = '5rem',
@@ -30,14 +32,19 @@ const SearchField = ({
 		let nxtIdx = focusIdx
 		switch (e.key) {
 			case 'ArrowUp':
-				nxtIdx = focusIdx <= 0 ? 0 : focusIdx - 1
+				nxtIdx = adjustNumberIncludingThresholds({
+					number: focusIdx - 1,
+					lowerLimit: 0,
+					upperLimit: recommendedTerms.length - 1
+				})
 				e.target.value = recommendedTerms[nxtIdx]
 				break
 			case 'ArrowDown':
-				nxtIdx =
-					recommendedTerms.length - 1 <= focusIdx
-						? recommendedTerms.length - 1
-						: focusIdx + 1
+				nxtIdx = adjustNumberIncludingThresholds({
+					number: focusIdx + 1,
+					lowerLimit: 0,
+					upperLimit: recommendedTerms.length - 1
+				})
 				e.target.value = recommendedTerms[nxtIdx]
 				break
 			case 'Enter':
@@ -59,8 +66,7 @@ const SearchField = ({
 	}
 	/** 입력창 클릭에 대한 이벤트 처리 */
 	const onClickForm = () => {
-		const arr = JSON.parse(localStorage.getItem(LATEST_TERMS))
-		if (arr === null) return
+		const arr = getLocalStorageArr({ storageKey: LATEST_TERMS })
 		setSearchKeywordAtom((prev) => {
 			return { ...prev, recommendedTerms: [...arr] }
 		})

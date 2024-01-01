@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { COLOR, FONT_WEIGHT } from '../libs/styeld-components/tokens'
 
 const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus }) => {
-	const arrToBeWritten = [...recommend]
+	const arrToBeWritten = [...recommend] // 출력될 문자열을 배열로 변환 (map() 적용 목적)
 
 	return (
 		<S.Wrapper {...{ $radius, $isFocus }}>
