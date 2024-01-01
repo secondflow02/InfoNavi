@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { LATEST_TERMS } from '../constants/local-stroage-key'
 import { getRecommendedTerms } from '../libs/axios/searching'
 import focusIdxAtom from '../libs/recoil/focus-idx'
-import recommendedTermsAtom from '../libs/recoil/recommended-terms.atom'
+import searchKeywordAtom from '../libs/recoil/search-keyword'
 import { BREAK_POINT, COLOR, FONT_SIZE } from '../libs/styeld-components/tokens'
 import debounce from '../utils/debounce'
 import {
@@ -16,9 +16,10 @@ const SearchField = ({
 	$bgColor = COLOR.grayScale[1500],
 	...rest
 }) => {
-	const [recommendedTerms, setRecommendedTerms] =
-		useRecoilState(recommendedTermsAtom)
 	const [focusIdx, setFocusIdx] = useRecoilState(focusIdxAtom)
+	const [searchKeyword, setSearchKeywordAtom] = useRecoilState(searchKeywordAtom)
+
+	const recommendedTerms = searchKeyword.recommendedTerms
 
 	/** "왼쪽","오른쪽","엔터" 키 입력 이벤트 처리 */
 	const onKeyUpForm = (e) => {
@@ -50,7 +51,6 @@ const SearchField = ({
 					storageKey: LATEST_TERMS,
 					size: 5
 				})
-				setRecommendedTerms([input_value])
 				return
 			default:
 				return
@@ -61,7 +61,9 @@ const SearchField = ({
 	const onClickForm = () => {
 		const arr = JSON.parse(localStorage.getItem(LATEST_TERMS))
 		if (arr === null) return
-		setRecommendedTerms([...arr])
+		setSearchKeywordAtom((prev) => {
+			return { ...prev, recommendedTerms: [...arr] }
+		})
 	}
 	/** 입력값 변경에 대한 이벤트 처리 */
 	const onChangeForm = (e) => {
@@ -71,9 +73,9 @@ const SearchField = ({
 	/** 데이터 패칭 후, 전역상태 관리 */
 	const fetchDataNRegisterWithGlobal = async (val) => {
 		const result = await getRecommendedTerms(val)
-		setRecommendedTerms(result)
+		setSearchKeywordAtom({ keyword: val, recommendedTerms: result })
 	}
-
+	/** fetchDataNRegisterWithGlobal 지연실행 로직 */
 	const onChangeInputLazy = debounce(fetchDataNRegisterWithGlobal, 500)
 
 	return (

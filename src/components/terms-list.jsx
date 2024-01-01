@@ -1,22 +1,30 @@
 import { useRecoilValue } from 'recoil'
 import styled from 'styled-components'
 import focusIdxAtom from '../libs/recoil/focus-idx'
-import recommendedTermsAtom from '../libs/recoil/recommended-terms.atom'
+import searchKeywordAtom from '../libs/recoil/search-keyword'
 import { COLOR } from '../libs/styeld-components/tokens'
 import TermOne from './term-one'
 
 const TermsList = ({ $width = '100%', $radius = '1rem' }) => {
-	const recommendedTerms = useRecoilValue(recommendedTermsAtom)
+	const searchKeyword = useRecoilValue(searchKeywordAtom)
 	const focusIdx = useRecoilValue(focusIdxAtom)
+
+	const keyword = searchKeyword.keyword
+	const recommendedTerms = searchKeyword.recommendedTerms
 
 	if (!recommendedTerms.length) return <></>
 
 	return (
 		<S.TermsContainer {...{ $width, $radius }}>
-			{recommendedTerms.map((term, idx) => {
+			{recommendedTerms.map((recommend, idx) => {
 				if (idx >= 7) return
 				return (
-					<TermOne key={idx} term={term} $isFocus={idx === focusIdx}></TermOne>
+					<TermOne
+						key={idx}
+						keyword={keyword}
+						recommend={recommend}
+						$isFocus={idx === focusIdx}
+					/>
 				)
 			})}
 		</S.TermsContainer>
