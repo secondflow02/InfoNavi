@@ -20,16 +20,15 @@ const SearchField = ({
 }) => {
 	const [focusIdx, setFocusIdx] = useRecoilState(focusIdxAtom)
 	const [searchKeyword, setSearchKeywordAtom] = useRecoilState(searchKeywordAtom)
-
 	const recommendedTerms = searchKeyword.recommendedTerms
 
 	/** "왼쪽","오른쪽","엔터" 키 입력 이벤트 처리 */
-	const onKeyUpForm = (e) => {
+	const onKeyUp = (e) => {
 		if (!recommendedTerms.length) {
 			setFocusIdx(-1)
 			return
 		}
-		let nxtIdx = focusIdx
+		let nxtIdx = -1
 		switch (e.key) {
 			case 'ArrowUp':
 				nxtIdx = adjustNumberIncludingThresholds({
@@ -48,33 +47,43 @@ const SearchField = ({
 				e.target.value = recommendedTerms[nxtIdx]
 				break
 			case 'Enter':
-				const input_value = e.target.value.trim()
-				if (input_value == '') return
-				unshiftElemToLocalStorageArr({
+				const input_value = e.target.input.value.trim()
+				saveInputOnLocalStorage({
 					storageKey: LATEST_TERMS,
-					element: input_value
-				})
-				resizeLocalStorageArr({
-					storageKey: LATEST_TERMS,
+					inputValue: input_value,
 					size: 5
 				})
-				return
+				break
+			case 'Escape':
+				e.target.value = ''
+				setSearchKeywordAtom({ keyword: '', recommendedTerms: [] })
+				break
 			default:
-				return
+				break
 		}
 		setFocusIdx(nxtIdx)
 	}
 	/** 입력창 클릭에 대한 이벤트 처리 */
-	const onClickForm = () => {
+	const onClick = () => {
 		const arr = getLocalStorageArr({ storageKey: LATEST_TERMS })
 		setSearchKeywordAtom((prev) => {
 			return { ...prev, recommendedTerms: [...arr] }
 		})
 	}
 	/** 입력값 변경에 대한 이벤트 처리 */
-	const onChangeForm = (e) => {
+	const onChange = (e) => {
 		onChangeInputLazy(e.target.value)
 		setFocusIdx(-1)
+	}
+	/** submit 이벤트 (버튼 클릭 등) 처리 */
+	const onSubmit = (e) => {
+		e.preventDefault()
+		const input_value = e.target.input.value.trim()
+		saveInputOnLocalStorage({
+			storageKey: LATEST_TERMS,
+			inputValue: input_value,
+			size: 5
+		})
 	}
 	/** 데이터 패칭 후, 전역상태 관리 */
 	const fetchDataNRegisterWithGlobal = async (val) => {
@@ -82,20 +91,27 @@ const SearchField = ({
 		setSearchKeywordAtom({ keyword: val, recommendedTerms: result })
 	}
 	/** fetchDataNRegisterWithGlobal 지연실행 로직 */
-	const onChangeInputLazy = debounce(fetchDataNRegisterWithGlobal, 500)
+	const onChangeInputLazy = debounce(fetchDataNRegisterWithGlobal, 300)
+	/** 로컬스토리지 저장 로직 */
+	const saveInputOnLocalStorage = ({ storageKey, inputValue, size }) => {
+		if (inputValue === '') return
+		unshiftElemToLocalStorageArr({
+			storageKey: storageKey,
+			element: inputValue
+		})
+		resizeLocalStorageArr({
+			storageKey: storageKey,
+			size
+		})
+	}
 
 	return (
 		<S.FromWrapper
 			{...{ $radius, $bgColor, ...rest }}
-			onSubmit={(e) => {
-				e.preventDefault()
-			}}
-			onClick={onClickForm}
-			onChange={onChangeForm}
-			onKeyUp={onKeyUpForm}
+			{...{ onClick, onChange, onSubmit, onKeyUp }}
 		>
-			<S.SearchInput />
-			<S.EnterButton>🔎</S.EnterButton>
+			<S.SearchInput name='input' />
+			<S.EnterButton type='submit'>🔎</S.EnterButton>
 		</S.FromWrapper>
 	)
 }
@@ -121,13 +137,11 @@ const FromWrapper = styled.form`
 		height: ${FONT_SIZE.sm};
 	}
 `
-
 const SearchInput = styled.input`
 	width: 85%;
 	background-color: transparent;
 	border: none;
 `
-
 const EnterButton = styled.button`
 	min-width: 10%;
 	border-radius: 10rem;
@@ -138,7 +152,6 @@ const EnterButton = styled.button`
 		background-color: ${COLOR.grayScale[1100]};
 	}
 `
-
 const S = {
 	FromWrapper,
 	SearchInput,

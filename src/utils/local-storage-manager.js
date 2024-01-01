@@ -1,3 +1,8 @@
+/**
+ * @param {string} storageKey localStorage key
+ * @description
+ * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, 해당 배열을 반환
+ */
 const getLocalStorageArr = ({ storageKey }) => {
 	const getArr = JSON.parse(localStorage.getItem(storageKey))
 	const newArr = []
