@@ -1,13 +1,13 @@
 import styled, { css, keyframes } from 'styled-components'
 import { COLOR, FONT_WEIGHT } from '../libs/styeld-components/tokens'
 
-const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus }) => {
+const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus, ...rest }) => {
 	const arrToBeWritten = [...recommend] // 출력될 문자열을 배열로 변환 (map() 적용 목적)
 
 	if (arrToBeWritten.length === 0) return <></>
 
 	return (
-		<S.Wrapper {...{ $radius, $isFocus }}>
+		<S.Wrapper {...{ $radius, $isFocus, ...rest }}>
 			{arrToBeWritten.map((character, idx) =>
 				keyword.includes(character) ? (
 					<S.Highlight key={idx}>{character}</S.Highlight>

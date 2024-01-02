@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import SearchField from './search-field'
 import TermsList from './terms-list'
@@ -8,19 +8,20 @@ const SearchManager = ({ $width }) => {
 	const [recommendArr, setRecommendArr] = useState([]) // 추천 검색어 배열
 	const [focusIdx, setFocusIdx] = useState(-1) // 추천 검색 배열 상, 포커스된 항목의 index
 
+	const formref = useRef() // input 창을 포함한 form 태그 추적
+
 	return (
 		<S.Container {...{ $width }}>
 			<SearchField
-				{...{
-					setSearchKeyword,
-					recommendArr,
-					setRecommendArr,
-					focusIdx,
-					setFocusIdx
-				}}
+				{...{ recommendArr, focusIdx }} // 상태값
+				{...{ setSearchKeyword, setRecommendArr, setFocusIdx }} // 상태변경 함수
+				{...{ formref }} // ref
 			/>
 			<S.AbsoluteWrapper>
-				<TermsList {...{ searchKeyword, recommendArr, focusIdx }} />
+				<TermsList
+					{...{ searchKeyword, recommendArr, focusIdx }}
+					{...{ formref }} // ref
+				/>
 			</S.AbsoluteWrapper>
 		</S.Container>
 	)

@@ -16,11 +16,12 @@ const SearchField = ({
 	setRecommendArr,
 	focusIdx,
 	setFocusIdx,
+	formref,
 	$radius = '5rem',
 	$bgColor = COLOR.grayScale[1500],
 	...rest
 }) => {
-	/** "왼쪽","오른쪽","엔터" 키 입력 이벤트 처리 */
+	/** "왼쪽","오른쪽","Enter",'ESC' 키 입력 이벤트 처리 */
 	const onKeyUp = (e) => {
 		if (!recommendArr.length) {
 			setFocusIdx(-1)
@@ -107,6 +108,7 @@ const SearchField = ({
 		<S.FromWrapper
 			{...{ $radius, $bgColor, ...rest }}
 			{...{ onClick, onChange, onSubmit, onKeyUp }}
+			ref={formref}
 		>
 			<S.SearchInput name='input' />
 			<S.EnterButton type='submit'>🔎</S.EnterButton>

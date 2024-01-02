@@ -6,10 +6,13 @@ const TermsList = ({
 	searchKeyword,
 	recommendArr,
 	focusIdx,
+	formref,
 	$radius = '1rem',
 	...rest
 }) => {
 	if (!recommendArr?.length) return <></>
+
+	console.log(formref.current.input.value)
 
 	return (
 		<S.TermsContainer {...{ $radius, ...rest }}>
@@ -20,6 +23,9 @@ const TermsList = ({
 						key={idx}
 						keyword={searchKeyword}
 						recommend={recommendOne}
+						onClick={() => {
+							formref.current.input.value = recommendOne
+						}}
 						$isFocus={idx === focusIdx}
 					/>
 				)
