@@ -1,5 +1,7 @@
 import styled, { css, keyframes } from 'styled-components'
+import { LATEST_TERMS } from '../constants/local-stroage-key'
 import { COLOR, FONT_WEIGHT } from '../libs/styeld-components/tokens'
+import { isThisOneInLocalStorageArr } from '../utils/local-storage-manager'
 
 const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus, ...rest }) => {
 	const arrToBeWritten = [...recommend] // 출력될 문자열을 배열로 변환 (map() 적용 목적)
@@ -8,6 +10,13 @@ const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus, ...rest }) =>
 
 	return (
 		<S.Wrapper {...{ $radius, $isFocus, ...rest }}>
+			{isThisOneInLocalStorageArr({
+				storageKey: LATEST_TERMS,
+				checkElem: recommend
+			})
+				? '🌀'
+				: ''}
+
 			{arrToBeWritten.map((character, idx) =>
 				keyword.includes(character) ? (
 					<S.Highlight key={idx}>{character}</S.Highlight>

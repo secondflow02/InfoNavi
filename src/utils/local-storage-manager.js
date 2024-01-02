@@ -34,5 +34,20 @@ const resizeLocalStorageArr = ({ storageKey, size }) => {
 	saveArr.splice(size)
 	localStorage.setItem(storageKey, JSON.stringify(saveArr))
 }
+/**
+ * @param {string} storageKey localStorage key
+ * @param {*} checkElem 배열 안에 있는지 확인해야 할 요소
+ * @description
+ * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, `checkElem` 가 해당 배열에 포함되어 있는지 확인
+ */
+const isThisOneInLocalStorageArr = ({ storageKey, checkElem }) => {
+	const findArr = getLocalStorageArr({ storageKey })
+	return findArr.includes(checkElem)
+}
 
-export { getLocalStorageArr, resizeLocalStorageArr, unshiftElemToLocalStorageArr }
+export {
+	getLocalStorageArr,
+	isThisOneInLocalStorageArr,
+	resizeLocalStorageArr,
+	unshiftElemToLocalStorageArr
+}

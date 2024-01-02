@@ -11,9 +11,6 @@ const TermsList = ({
 	...rest
 }) => {
 	if (!recommendArr?.length) return <></>
-
-	console.log(formref.current.input.value)
-
 	return (
 		<S.TermsContainer {...{ $radius, ...rest }}>
 			{recommendArr.map((recommendOne, idx) => {
