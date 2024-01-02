@@ -19,7 +19,8 @@ const SearchManager = ({ $width }) => {
 			/>
 			<S.AbsoluteWrapper>
 				<TermsList
-					{...{ searchKeyword, recommendArr, focusIdx }}
+					{...{ searchKeyword, recommendArr, focusIdx }} // 상태값
+					{...{ setSearchKeyword, setRecommendArr }} // 상태변경 함수
 					{...{ formref }} // ref
 				/>
 			</S.AbsoluteWrapper>

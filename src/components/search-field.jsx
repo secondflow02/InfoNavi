@@ -47,11 +47,18 @@ const SearchField = ({
 				break
 			case 'Enter':
 				const input_value = e.target.value.trim()
+				if (input_value === '') {
+					showLocalStorageArr({ storageKey: LATEST_TERMS })
+					break
+				}
 				saveInputOnLocalStorage({
 					storageKey: LATEST_TERMS,
 					inputValue: input_value,
 					size: 5
 				})
+				setSearchKeyword(input_value)
+				setRecommendArr([input_value])
+				window.alert(`"${input_value}" 에 대한 검색결과 페이지로 이동.. 🛫`)
 				break
 			case 'Escape':
 				e.target.value = ''
@@ -65,8 +72,8 @@ const SearchField = ({
 	}
 	/** 입력창 클릭에 대한 이벤트 처리 */
 	const onClick = () => {
-		const arr = getLocalStorageArr({ storageKey: LATEST_TERMS })
-		setRecommendArr([...arr])
+		if (formref.current.input.value === '')
+			showLocalStorageArr({ storageKey: LATEST_TERMS })
 	}
 	/** 입력값 변경에 대한 이벤트 처리 */
 	const onChange = (e) => {
@@ -77,11 +84,13 @@ const SearchField = ({
 	const onSubmit = (e) => {
 		e.preventDefault()
 		const input_value = e.target.input.value.trim()
+		if (formref.current.input.value === '') return
 		saveInputOnLocalStorage({
 			storageKey: LATEST_TERMS,
 			inputValue: input_value,
 			size: 5
 		})
+		window.alert(`"${input_value}" 에 대한 검색결과 페이지로 이동.. 🛫`)
 	}
 	/** 데이터 패칭 후, 전역상태 관리 */
 	const fetchDataNRegisterWithGlobal = async (val) => {
@@ -103,6 +112,11 @@ const SearchField = ({
 			size
 		})
 	}
+	/** 로컬스토리지에 저장된 배열 값을 스크린에 전시 */
+	const showLocalStorageArr = ({ storageKey }) => {
+		const arr = getLocalStorageArr({ storageKey })
+		setRecommendArr([...arr])
+	}
 
 	return (
 		<S.FromWrapper
@@ -110,7 +124,7 @@ const SearchField = ({
 			{...{ onClick, onChange, onSubmit, onKeyUp }}
 			ref={formref}
 		>
-			<S.SearchInput name='input' />
+			<S.SearchInput name='input' type='text' autoComplete='off' />
 			<S.EnterButton type='submit'>🔎</S.EnterButton>
 		</S.FromWrapper>
 	)
