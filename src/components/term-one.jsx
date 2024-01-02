@@ -3,6 +3,9 @@ import { COLOR, FONT_WEIGHT } from '../libs/styeld-components/tokens'
 
 const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus }) => {
 	const arrToBeWritten = [...recommend] // 출력될 문자열을 배열로 변환 (map() 적용 목적)
+
+	if (arrToBeWritten.length === 0) return <></>
+
 	return (
 		<S.Wrapper {...{ $radius, $isFocus }}>
 			{arrToBeWritten.map((character, idx) =>
