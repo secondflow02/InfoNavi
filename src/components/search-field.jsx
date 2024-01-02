@@ -1,7 +1,9 @@
 import styled from 'styled-components'
+import { CACHE_RECOMMEND_TERMS } from '../constants/cache-storage-key'
 import { LATEST_TERMS } from '../constants/local-stroage-key'
 import { getRecommendedTerms } from '../libs/axios/searching'
 import { BREAK_POINT, COLOR, FONT_SIZE } from '../libs/styeld-components/tokens'
+import { searchQueryAndSave } from '../utils/cache-storage-manager'
 import debounce from '../utils/debounce'
 import {
 	getLocalStorageArr,
@@ -93,9 +95,14 @@ const SearchField = ({
 		window.alert(`"${input_value}" 에 대한 검색결과 페이지로 이동.. 🛫`)
 	}
 	/** 데이터 패칭 후, 전역상태 관리 */
-	const fetchDataNRegisterWithGlobal = async (val) => {
-		const result = await getRecommendedTerms(val)
-		setSearchKeyword(val)
+	const fetchDataNRegisterWithGlobal = async (keyword) => {
+		const result = await searchQueryAndSave({
+			storageKey: CACHE_RECOMMEND_TERMS,
+			keyword: keyword,
+			axiosFunc: getRecommendedTerms,
+			params: [keyword]
+		})
+		setSearchKeyword(keyword)
 		setRecommendArr(result)
 	}
 	/** fetchDataNRegisterWithGlobal 지연실행 로직 */
