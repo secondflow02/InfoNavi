@@ -1,19 +1,32 @@
+import { useState } from 'react'
 import styled from 'styled-components'
 import SearchField from './search-field'
 import TermsList from './terms-list'
 
-const SearchBox = ({ $width }) => {
+const SearchManager = ({ $width }) => {
+	const [searchKeyword, setSearchKeyword] = useState('') // 검색 키워드
+	const [recommendArr, setRecommendArr] = useState([]) // 추천 검색어 배열
+	const [focusIdx, setFocusIdx] = useState(-1) // 추천 검색 배열 상, 포커스된 항목의 index
+
 	return (
 		<S.Container {...{ $width }}>
-			<SearchField />
+			<SearchField
+				{...{
+					setSearchKeyword,
+					recommendArr,
+					setRecommendArr,
+					focusIdx,
+					setFocusIdx
+				}}
+			/>
 			<S.AbsoluteWrapper>
-				<TermsList />
+				<TermsList {...{ searchKeyword, recommendArr, focusIdx }} />
 			</S.AbsoluteWrapper>
 		</S.Container>
 	)
 }
 
-export default SearchBox
+export default SearchManager
 
 const Container = styled.div`
 	position: relative;

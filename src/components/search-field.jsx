@@ -1,9 +1,6 @@
-import { useRecoilState } from 'recoil'
 import styled from 'styled-components'
 import { LATEST_TERMS } from '../constants/local-stroage-key'
 import { getRecommendedTerms } from '../libs/axios/searching'
-import focusIdxAtom from '../libs/recoil/focus-idx'
-import searchKeywordAtom from '../libs/recoil/search-keyword'
 import { BREAK_POINT, COLOR, FONT_SIZE } from '../libs/styeld-components/tokens'
 import debounce from '../utils/debounce'
 import {
@@ -14,17 +11,18 @@ import {
 import { adjustNumberIncludingThresholds } from '../utils/threshold'
 
 const SearchField = ({
+	setSearchKeyword,
+	recommendArr,
+	setRecommendArr,
+	focusIdx,
+	setFocusIdx,
 	$radius = '5rem',
 	$bgColor = COLOR.grayScale[1500],
 	...rest
 }) => {
-	const [focusIdx, setFocusIdx] = useRecoilState(focusIdxAtom)
-	const [searchKeyword, setSearchKeywordAtom] = useRecoilState(searchKeywordAtom)
-	const recommendedTerms = searchKeyword.recommendedTerms
-
 	/** "왼쪽","오른쪽","엔터" 키 입력 이벤트 처리 */
 	const onKeyUp = (e) => {
-		if (!recommendedTerms.length) {
+		if (!recommendArr.length) {
 			setFocusIdx(-1)
 			return
 		}
@@ -34,20 +32,20 @@ const SearchField = ({
 				nxtIdx = adjustNumberIncludingThresholds({
 					number: focusIdx - 1,
 					lowerLimit: 0,
-					upperLimit: recommendedTerms.length - 1
+					upperLimit: recommendArr.length - 1
 				})
-				e.target.value = recommendedTerms[nxtIdx]
+				e.target.value = recommendArr[nxtIdx]
 				break
 			case 'ArrowDown':
 				nxtIdx = adjustNumberIncludingThresholds({
 					number: focusIdx + 1,
 					lowerLimit: 0,
-					upperLimit: recommendedTerms.length - 1
+					upperLimit: recommendArr.length - 1
 				})
-				e.target.value = recommendedTerms[nxtIdx]
+				e.target.value = recommendArr[nxtIdx]
 				break
 			case 'Enter':
-				const input_value = e.target.input.value.trim()
+				const input_value = e.target.value.trim()
 				saveInputOnLocalStorage({
 					storageKey: LATEST_TERMS,
 					inputValue: input_value,
@@ -56,7 +54,8 @@ const SearchField = ({
 				break
 			case 'Escape':
 				e.target.value = ''
-				setSearchKeywordAtom({ keyword: '', recommendedTerms: [] })
+				setSearchKeyword('')
+				setRecommendArr([])
 				break
 			default:
 				break
@@ -66,9 +65,7 @@ const SearchField = ({
 	/** 입력창 클릭에 대한 이벤트 처리 */
 	const onClick = () => {
 		const arr = getLocalStorageArr({ storageKey: LATEST_TERMS })
-		setSearchKeywordAtom((prev) => {
-			return { ...prev, recommendedTerms: [...arr] }
-		})
+		setRecommendArr([...arr])
 	}
 	/** 입력값 변경에 대한 이벤트 처리 */
 	const onChange = (e) => {
@@ -88,7 +85,8 @@ const SearchField = ({
 	/** 데이터 패칭 후, 전역상태 관리 */
 	const fetchDataNRegisterWithGlobal = async (val) => {
 		const result = await getRecommendedTerms(val)
-		setSearchKeywordAtom({ keyword: val, recommendedTerms: result })
+		setSearchKeyword(val)
+		setRecommendArr(result)
 	}
 	/** fetchDataNRegisterWithGlobal 지연실행 로직 */
 	const onChangeInputLazy = debounce(fetchDataNRegisterWithGlobal, 300)
