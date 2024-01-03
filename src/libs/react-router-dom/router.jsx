@@ -2,7 +2,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import Backdrop from '../../components/backdrop'
 import Home from '../../pages/home'
 
-const router = createBrowserRouter([
+const Router = createBrowserRouter([
 	{
 		path: '',
 		element: <Backdrop />,
@@ -10,4 +10,4 @@ const router = createBrowserRouter([
 	}
 ])
 
-export default router
+export default Router

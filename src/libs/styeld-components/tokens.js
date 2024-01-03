@@ -1,4 +1,4 @@
-const COLOR = {
+export const COLOR = {
 	main: '#FFFBF6',
 	grayScale: {
 		0: '#000000',
@@ -22,13 +22,13 @@ const COLOR = {
 	error: '#F14D37'
 }
 
-const BREAK_POINT = {
+export const BREAK_POINT = {
 	sm: '480px', // small
 	md: '896px', // medium
 	lg: '1152px' // large
 }
 
-const FONT_SIZE = {
+export const FONT_SIZE = {
 	sm: '1.3rem', // small
 	md: '1.8rem', // medium
 	bg: '2.4rem', // big
@@ -36,10 +36,8 @@ const FONT_SIZE = {
 	xl: '4.8rem' // extreme large
 }
 
-const FONT_WEIGHT = {
+export const FONT_WEIGHT = {
 	thin: 100,
 	normal: 500,
 	bold: 1000
 }
-
-export { BREAK_POINT, COLOR, FONT_SIZE, FONT_WEIGHT }

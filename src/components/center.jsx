@@ -17,7 +17,7 @@ const Center = ({
 
 export default Center
 
-const variant_css = {
+const variantCSS = {
 	default: css``,
 	outline: css`
 		border: 1px solid ${COLOR.grayScale[1200]};
@@ -34,7 +34,7 @@ const Container = styled.div`
 	background-color: ${({ $bgColor }) => $bgColor};
 	border-radius: ${({ $radius }) => $radius};
 
-	${({ $variant }) => variant_css[$variant]}
+	${({ $variant }) => variantCSS[$variant]}
 `
 
 const S = { Container }

@@ -1,4 +1,9 @@
-const searchQueryAndSave = async ({ storageKey, keyword, axiosFunc, params }) => {
+export const searchQueryAndSave = async ({
+	storageKey,
+	keyword,
+	axiosFunc,
+	params
+}) => {
 	const cacheStorage = await caches.open(storageKey)
 	const cachedResponse = await cacheStorage.match(keyword)
 	try {
@@ -14,5 +19,3 @@ const searchQueryAndSave = async ({ storageKey, keyword, axiosFunc, params }) =>
 		window.alert('[캐시 및 쿠키 삭제] 를 진행해주세요.')
 	}
 }
-
-export { searchQueryAndSave }

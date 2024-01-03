@@ -1,12 +1,12 @@
 import { RouterProvider } from 'react-router-dom'
-import router from './libs/react-router-dom/router'
+import Router from './libs/react-router-dom/router'
 import GlobalStyles from './libs/styeld-components/global-styles'
 
 const App = () => {
 	return (
 		<>
 			<GlobalStyles />
-			<RouterProvider router={router} />
+			<RouterProvider router={Router} />
 		</>
 	)
 }

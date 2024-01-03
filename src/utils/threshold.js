@@ -7,11 +7,13 @@
  * - number 의 값이 하한보다 작다면 반환값을 하한으로 조정
  * - number 의 값이 상한보다 크다면 반환값을 상한으로 조정
  */
-const adjustNumberIncludingThresholds = ({ number, upperLimit, lowerLimit }) => {
+export const adjustNumberIncludingThresholds = ({
+	number,
+	upperLimit,
+	lowerLimit
+}) => {
 	if (upperLimit < lowerLimit) throw new Error('parameters are not appropriate.')
 	if (number > upperLimit) return upperLimit
 	if (number < lowerLimit) return lowerLimit
 	return number
 }
-
-export { adjustNumberIncludingThresholds }

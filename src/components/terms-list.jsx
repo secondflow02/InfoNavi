@@ -28,7 +28,7 @@ const TermsList = ({
 	 * - `recommendOne` 한 개의 요소를 가진 배열로 recommendArr 교체
 	 * - `recommendOne` 를 keyword 로 등록 => mark 효과를 받기 위함
 	 */
-	const onClickTermOne = (recommendOne) => {
+	const onClickTermOne = ({ recommendOne }) => {
 		formref.current.input.value = recommendOne
 		unshiftElemToLocalStorageArr({
 			storageKey: LATEST_TERMS,
@@ -53,7 +53,7 @@ const TermsList = ({
 						keyword={searchKeyword}
 						recommend={recommendOne}
 						onClick={() => {
-							onClickTermOne(recommendOne)
+							onClickTermOne({ recommendOne })
 						}}
 						$isFocus={idx === focusIdx}
 					/>

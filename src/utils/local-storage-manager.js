@@ -3,7 +3,7 @@
  * @description
  * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, 해당 배열을 반환
  */
-const getLocalStorageArr = ({ storageKey }) => {
+export const getLocalStorageArr = ({ storageKey }) => {
 	const getArr = JSON.parse(localStorage.getItem(storageKey))
 	const newArr = []
 	if (getArr !== null) newArr.push(...getArr)
@@ -16,7 +16,7 @@ const getLocalStorageArr = ({ storageKey }) => {
  * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, `element` 를 해당 배열에 추가
  * - 배열의 앞 (인덱스 0) 에 추가
  */
-const unshiftElemToLocalStorageArr = ({ storageKey, element }) => {
+export const unshiftElemToLocalStorageArr = ({ storageKey, element }) => {
 	let saveArr = getLocalStorageArr({ storageKey })
 	saveArr.unshift(element)
 	saveArr = [...new Set(saveArr)]
@@ -29,7 +29,7 @@ const unshiftElemToLocalStorageArr = ({ storageKey, element }) => {
  * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, `size` 만큼 배열 길이를 조정
  * - 인덱스 0 부터 `size` 만큼 잘라, 다시 localStorage 에 저장
  */
-const resizeLocalStorageArr = ({ storageKey, size }) => {
+export const resizeLocalStorageArr = ({ storageKey, size }) => {
 	let saveArr = getLocalStorageArr({ storageKey })
 	saveArr.splice(size)
 	localStorage.setItem(storageKey, JSON.stringify(saveArr))
@@ -40,14 +40,7 @@ const resizeLocalStorageArr = ({ storageKey, size }) => {
  * @description
  * - 로컬스토리지에 배열 형태로 저장된 특정 값을 `storageKey` 로 찾아, `checkElem` 가 해당 배열에 포함되어 있는지 확인
  */
-const isThisOneInLocalStorageArr = ({ storageKey, checkElem }) => {
+export const isThisOneInLocalStorageArr = ({ storageKey, checkElem }) => {
 	const findArr = getLocalStorageArr({ storageKey })
 	return findArr.includes(checkElem)
-}
-
-export {
-	getLocalStorageArr,
-	isThisOneInLocalStorageArr,
-	resizeLocalStorageArr,
-	unshiftElemToLocalStorageArr
 }

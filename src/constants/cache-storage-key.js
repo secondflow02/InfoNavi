@@ -1,2 +1,1 @@
-const CACHE_RECOMMEND_TERMS = 'recommendTermsCache'
-export { CACHE_RECOMMEND_TERMS }
+export const CACHE_RECOMMEND_TERMS = 'recommendTermsCache'

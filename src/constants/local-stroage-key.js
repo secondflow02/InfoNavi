@@ -1,2 +1,1 @@
-const LATEST_TERMS = 'latestTerms'
-export { LATEST_TERMS }
+export const LATEST_TERMS = 'latestTerms'

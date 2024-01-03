@@ -1,6 +1,6 @@
 import { recommendedTermsInstance } from './base'
 
-export const getRecommendedTerms = async (key) => {
+export const getRecommendedTerms = async ({ key }) => {
 	try {
 		const response = await recommendedTermsInstance().get('/search', {
 			params: { key }

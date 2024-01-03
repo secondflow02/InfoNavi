@@ -14,7 +14,7 @@ const TermOne = ({ recommend, keyword, $radius = '1rem', $isFocus, ...rest }) =>
 				storageKey: LATEST_TERMS,
 				checkElem: recommend
 			})
-				? '🌀'
+				? '🌀 '
 				: ''}
 
 			{arrToBeWritten.map((character, idx) =>

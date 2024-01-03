@@ -4,7 +4,7 @@ import { LATEST_TERMS } from '../constants/local-stroage-key'
 import { getRecommendedTerms } from '../libs/axios/searching'
 import { BREAK_POINT, COLOR, FONT_SIZE } from '../libs/styeld-components/tokens'
 import { searchQueryAndSave } from '../utils/cache-storage-manager'
-import debounce from '../utils/debounce'
+import { debounce } from '../utils/debounce'
 import {
 	getLocalStorageArr,
 	resizeLocalStorageArr,
@@ -48,19 +48,19 @@ const SearchField = ({
 				e.target.value = recommendArr[nxtIdx]
 				break
 			case 'Enter':
-				const input_value = e.target.value.trim()
-				if (input_value === '') {
+				const inputValue = e.target.value.trim()
+				if (inputValue === '') {
 					showLocalStorageArr({ storageKey: LATEST_TERMS })
 					break
 				}
 				saveInputOnLocalStorage({
 					storageKey: LATEST_TERMS,
-					inputValue: input_value,
+					inputValue: inputValue,
 					size: 5
 				})
-				setSearchKeyword(input_value)
-				setRecommendArr([input_value])
-				window.alert(`"${input_value}" 에 대한 검색결과 페이지로 이동.. 🛫`)
+				setSearchKeyword(inputValue)
+				setRecommendArr([inputValue])
+				window.alert(`"${inputValue}" 에 대한 검색결과 페이지로 이동.. 🛫`)
 				break
 			case 'Escape':
 				e.target.value = ''
@@ -85,28 +85,31 @@ const SearchField = ({
 	/** submit 이벤트 (버튼 클릭 등) 처리 */
 	const onSubmit = (e) => {
 		e.preventDefault()
-		const input_value = e.target.input.value.trim()
+		const inputValue = e.target.input.value.trim()
 		if (formref.current.input.value === '') return
 		saveInputOnLocalStorage({
 			storageKey: LATEST_TERMS,
-			inputValue: input_value,
+			inputValue: inputValue,
 			size: 5
 		})
-		window.alert(`"${input_value}" 에 대한 검색결과 페이지로 이동.. 🛫`)
+		window.alert(`"${inputValue}" 에 대한 검색결과 페이지로 이동.. 🛫`)
 	}
-	/** 데이터 패칭 후, 전역상태 관리 */
-	const fetchDataNRegisterWithGlobal = async (keyword) => {
+	/** 데이터 패칭 후, 상태 관리 */
+	const fetchDataNRegisterWithState = async (keyword) => {
 		const result = await searchQueryAndSave({
 			storageKey: CACHE_RECOMMEND_TERMS,
 			keyword: keyword,
 			axiosFunc: getRecommendedTerms,
-			params: [keyword]
+			params: [{ key: keyword }]
 		})
 		setSearchKeyword(keyword)
 		setRecommendArr(result)
 	}
-	/** fetchDataNRegisterWithGlobal 지연실행 로직 */
-	const onChangeInputLazy = debounce(fetchDataNRegisterWithGlobal, 300)
+	/** fetchDataNRegisterWithState 지연실행 로직 */
+	const onChangeInputLazy = debounce({
+		callbackFunc: fetchDataNRegisterWithState,
+		delay: 300
+	})
 	/** 로컬스토리지 저장 로직 */
 	const saveInputOnLocalStorage = ({ storageKey, inputValue, size }) => {
 		if (inputValue === '') return
