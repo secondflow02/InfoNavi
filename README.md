@@ -3,7 +3,7 @@
 ### 검색어 조회 사이트
 <div align="center">
 
-[![InfoNavi](https://github.com/secondflow02/InfoNavi/assets/50646145/9606f890-9783-4040-9008-97599edf9d63)](https://vercel.com/yunshins-projects/info-navi "INFONAVI")
+[![InfoNavi](https://github.com/secondflow02/InfoNavi/assets/50646145/9606f890-9783-4040-9008-97599edf9d63)](https://info-navi.vercel.app/ "INFONAVI")
 
 _👆 Logo 클릭 시, 배포된 주소로 이동됩니다._
 
