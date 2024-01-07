@@ -45,6 +45,7 @@ _👆 Logo 클릭 시, 배포된 주소로 이동됩니다._
 ## 🚨 주의사항
 - 연관 검색어가 적거나 적절치 않을 수 있습니다.
 - glitch 를 통해 배포한 json-sever 를 통해 연관 검색어를 응답 받습니다. 서비스 방문 직후, 연관 검색어 응답이 제대로 이뤄지지 않을 수 있습니다.
+  - (검색어를 조금 입력하다 보면, 10초~30초 중 정상작동 합니다. 😅)
 - 해당 프로젝트는 사용자의 입력에 따라 최근/연관 검색어를 출력하는 기능을 구현하는 것이 목적입니다. 즉, 검색 결과 페이지로의 이동 구현되지 않았습니다.
 
 <br/>
@@ -59,9 +60,9 @@ _👆 Logo 클릭 시, 배포된 주소로 이동됩니다._
 
 ## 👨‍🦲 프로젝트 인원
 
-| 이윤신 |
-|--------|
-|[@TransparentDeveloper](https://github.com/TransparentDeveloper)|
+|<img width="200" alt="TransparentDeveloper_Avatar" src="https://avatars.githubusercontent.com/u/50646145?v=4">|
+|:--------:|
+| 이윤신 [@TransparentDeveloper](https://github.com/TransparentDeveloper) |
 
 <br/>
 <br/>
